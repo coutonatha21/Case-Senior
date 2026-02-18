@@ -1,0 +1,55 @@
+<app-loading [loading]="carregandoVagas()">
+  <p-card>
+    <ng-template pTemplate="title">
+      <h2>Vagas por Estacionamento</h2>
+    </ng-template>
+    <ng-template pTemplate="content">
+      <p-toolbar>
+        <ng-template pTemplate="start">
+          <p-iconField iconPosition="right">
+            <p-autoComplete
+              [(ngModel)]="estacionamentoSelecionado"
+              [suggestions]="estacionamentosFiltrados"
+              (completeMethod)="filtrarEstacionamentos($event)"
+              (onSelect)="onEstacionamentoSelect($event.value)"
+              [dropdown]="true"
+              [showEmptyMessage]="true"
+              emptyMessage="Nenhum estacionamento encontrado"
+              placeholder="Estacionamento"
+              field="desEst"
+              inputStyleClass="p-inputtext"
+              styleClass="w-full">
+              <ng-template let-estacionamento pTemplate="item">
+                <div>{{ estacionamento.codEst }} - {{ estacionamento.desEst }} | {{estacionamento.qtdVag}} vagas</div>
+              </ng-template>
+            </p-autoComplete>
+          </p-iconField>
+        </ng-template>
+        <ng-template pTemplate="center"></ng-template>
+        <ng-template pTemplate="end"></ng-template>
+      </p-toolbar>
+    </ng-template>
+  </p-card>
+  <div class="grid mt-1">
+    <div class="col-3" *ngFor="let vehicle of vehicles">
+      <p-card [style]="{ width: '28rem', overflow: 'hidden' }" [ngClass]="{'vaga-livre-card': vehicle.owner === 'Livre'}">
+        <ng-template pTemplate="header"></ng-template>
+        <ng-template pTemplate="title">
+          <div class="vehicle-title" [ngClass]="{'vaga-livre': vehicle.owner === 'Livre'}">
+            {{ vehicle.owner === 'Livre' ? 'VAGA DISPONÍVEL' : (vehicle.id + ' - ' + vehicle.owner) }}
+          </div>
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+          {{ vehicle.owner === 'Livre' ? '-' : vehicle.model }}
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <ul class="card-moderno__lista">
+            <li><i class="pi pi-id-card"></i> Placa: {{ vehicle.owner === 'Livre' ? '-' : vehicle.plate }}</li>
+            <li><i class="pi pi-calendar"></i> Ano: {{ vehicle.owner === 'Livre' ? '-' : vehicle.year }}</li>
+            <li><i class="pi pi-palette"></i> Cor: {{ vehicle.owner === 'Livre' ? '-' : vehicle.color }}</li>
+          </ul>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</app-loading>

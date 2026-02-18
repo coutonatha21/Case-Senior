@@ -1,0 +1,15 @@
+<div class="loading-wrapper">
+  <div class="loading-content" [class.is-loading]="loading()">
+    <ng-content></ng-content>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-overlay">
+      <div class="dot-pulse">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  }
+</div>
