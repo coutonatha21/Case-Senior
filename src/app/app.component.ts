@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { ButtonModule } from "primeng/button";
+import { ButtonModule } from 'primeng/button';
 import { TokenService } from './core/services/token.service';
 
 @Component({
@@ -9,15 +9,14 @@ import { TokenService } from './core/services/token.service';
   standalone: true,
   imports: [RouterOutlet, ButtonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
-
 export class AppComponent implements OnInit {
   title = 'tela-web';
 
-  private tokenService = inject(TokenService)
+  private tokenService = inject(TokenService);
 
   ngOnInit(): void {
     this.tokenService.obterToken().subscribe();
   }
-} 
+}

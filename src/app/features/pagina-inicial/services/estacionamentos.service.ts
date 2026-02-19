@@ -12,7 +12,7 @@ export class EstacionamentosService {
     id: 'b0d5b4d8-a857-4261-bb7e-efa6342296e1',
     inputData: {
       module: 'rubi',
-      server: 'http://ec2-54-175-124-51.compute-1.amazonaws.com:8080',
+      server: `http://${environment.server.acces}:8080`,
       port: 'Estacionamentos',
       service: 'case.senior.GestaoEstacionamento',
       encryption: '3',
@@ -25,7 +25,6 @@ export class EstacionamentosService {
   private http = inject(HttpClient);
 
   public obterEstacionamentos(): Observable<Estacionamentos> {
-
     return this.http.post<Estacionamentos>(environment.plugin.invoke, {
       ...this.basePayload,
       inputData: {

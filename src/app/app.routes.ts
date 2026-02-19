@@ -8,9 +8,9 @@ export const routes: Routes = [
   },
   {
     path: 'pagina-inicial',
-    loadComponent: () => 
-      import("./features/pagina-inicial/pagina-inicial.component").then(
-      (c) => c.PaginaInicialComponent
-    ),
+    loadComponent: () =>
+      import('./features/pagina-inicial/pagina-inicial.component').then(
+        (c) => c.PaginaInicialComponent,
+      ),
   },
 ];

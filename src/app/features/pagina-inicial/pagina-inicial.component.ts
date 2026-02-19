@@ -25,7 +25,6 @@ export class PaginaInicialComponent implements OnInit {
     this.EstacionamentosService.obterEstacionamentos()
       .pipe(
         finalize(() => {
-          console.log('Finalizando obtenção de informações dos estacionamentos');
           this.carregandoInformacoes.set(false);
         }),
       )

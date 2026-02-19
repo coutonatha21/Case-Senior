@@ -12,7 +12,7 @@ export class VagasService {
     id: 'b0d5b4d8-a857-4261-bb7e-efa6342296e1',
     inputData: {
       module: 'rubi',
-      server: 'http://ec2-54-175-124-51.compute-1.amazonaws.com:8080',
+      server: `http://${environment.server.acces}:8080`,
       port: 'Vagas',
       service: 'case.senior.GestaoEstacionamento',
       encryption: '3',
@@ -25,7 +25,6 @@ export class VagasService {
   private http = inject(HttpClient);
 
   public obterVagas(CodEst: string): Observable<Vagas> {
-    console.log(this.basePayload.inputData, CodEst);
     return this.http.post<Vagas>(environment.plugin.invoke, {
       ...this.basePayload,
       inputData: {
