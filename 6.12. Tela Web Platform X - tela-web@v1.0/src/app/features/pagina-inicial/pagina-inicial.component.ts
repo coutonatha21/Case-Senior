@@ -22,7 +22,7 @@ export class PaginaInicialComponent implements OnInit {
 
   ngOnInit(): void {
     this.carregandoInformacoes.set(true);
-    this.EstacionamentosService.obterEstacionamentos()
+    this.EstacionamentosService.obterEstacionamentos('R')
       .pipe(
         finalize(() => {
           this.carregandoInformacoes.set(false);

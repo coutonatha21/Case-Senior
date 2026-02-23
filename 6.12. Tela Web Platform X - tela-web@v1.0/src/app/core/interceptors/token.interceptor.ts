@@ -11,10 +11,10 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     switchMap((token) => {
       req = req.clone({
         setHeaders: {
-          Authorization: `${token.tokenType} ${token.accessToken}`
-        }
-      })
+          Authorization: `${token.tokenType} ${token.accessToken}`,
+        },
+      });
       return next(req);
-    })
-  )
+    }),
+  );
 };

@@ -13,8 +13,8 @@ export class EstacionamentosService {
     inputData: {
       module: 'rubi',
       server: `http://${environment.server.acces}:8080`,
-      port: 'Estacionamentos',
-      service: 'case.senior.GestaoEstacionamento',
+      port: 'CRUD_Estacionamentos',
+      service: 'case.senior.gestao.estacionamento',
       encryption: '3',
       user: '',
       password: '',
@@ -24,12 +24,14 @@ export class EstacionamentosService {
 
   private http = inject(HttpClient);
 
-  public obterEstacionamentos(): Observable<Estacionamentos> {
-    return this.http.post<Estacionamentos>(environment.plugin.invoke, {
+  public obterEstacionamentos(TipOpe: String): Observable<Estacionamentos> {
+    const payload = {
       ...this.basePayload,
       inputData: {
         ...this.basePayload.inputData,
+        TipOpe,
       },
-    });
+    };
+    return this.http.post<Estacionamentos>(environment.plugin.invoke, payload);
   }
 }

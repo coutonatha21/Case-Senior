@@ -48,6 +48,7 @@ export class vagasPorEstacionamento {
 
   protected vehicles: any[] = [];
   protected carregandoVagas = signal(false);
+  protected tipOpe = 'R';
 
   filtrarEstacionamentos(event: { query: string }) {
     const todos = this.InformacoesEstacionamentos()?.outputData?.retEst ?? [];
@@ -62,46 +63,65 @@ export class vagasPorEstacionamento {
     this.estacionamentoSelecionado = estacionamento;
     this.carregandoVagas.set(true);
 
-    this.vagasService.obterVagas(estacionamento.codEst).subscribe({
-      next: (response) => {
-        let retVag = response.outputData?.retVag;
-        if (retVag && !Array.isArray(retVag)) {
-          retVag = [retVag];
-        } else if (!retVag) {
-          retVag = [];
-        }
+    this.vagasService
+      .obterVagas(this.tipOpe, estacionamento.codEst ?? '')
+      .subscribe({
+        next: (response) => {
+          const retVagRaw = response?.outputData?.retVag;
 
-        const vagasPreenchidas = retVag.map((vaga) => ({
-          id: Number(vaga.numCad),
-          owner: vaga.nomFun,
-          model: vaga.modVei,
-          plate: vaga.plaVei,
-          year: Number(vaga.anoVei.split('/')[2]),
-          color: vaga.corVei,
-        }));
+          const retVagArr = Array.isArray(retVagRaw)
+            ? retVagRaw
+            : retVagRaw
+              ? [retVagRaw]
+              : [];
 
-        const retVagVazio = retVag.length === 0;
-        const vagasDisponiveis = retVagVazio
-          ? Number(response.outputData?.totVag || 0)
-          : Number(response.outputData?.vagDis || 0);
+          const estacionamentoResposta = retVagArr.find(
+            (est: any) => Number(est.codEst) === Number(estacionamento.codEst),
+          );
 
-        const vagasLivres = Array.from({ length: vagasDisponiveis }).map(
-          (_, index) => ({
-            id: undefined,
-            owner: 'Livre',
-            model: undefined,
-            plate: undefined,
-            year: undefined,
-            color: undefined,
-          }),
-        );
+          if (!estacionamentoResposta) {
+            this.vehicles = [];
+            this.carregandoVagas.set(false);
+            return;
+          }
 
-        this.vehicles = [...vagasPreenchidas, ...vagasLivres];
-        this.carregandoVagas.set(false);
-      },
-      error: () => {
-        this.carregandoVagas.set(false);
-      },
-    });
+          // Processa os veículos
+          let retVei = estacionamentoResposta.retVei;
+          if (retVei && !Array.isArray(retVei)) {
+            retVei = [retVei];
+          } else if (!retVei) {
+            retVei = [];
+          }
+
+          const vagasPreenchidas = (retVei as any[]).map((veiculo) => ({
+            id: Number(veiculo.numCad),
+            owner: veiculo.nomFun,
+            model: veiculo.modVei,
+            plate: veiculo.plaVei,
+            year: veiculo.anoVei,
+            color: veiculo.corVei,
+          }));
+
+          // Calcula vagas livres
+          const vagasDisponiveis = Number(estacionamentoResposta.vagDis || 0);
+
+          const vagasLivres = Array.from({ length: vagasDisponiveis }).map(
+            (_, index) => ({
+              id: undefined,
+              owner: 'Livre',
+              model: undefined,
+              plate: undefined,
+              year: undefined,
+              color: undefined,
+            }),
+          );
+
+          this.vehicles = [...vagasPreenchidas, ...vagasLivres];
+          this.carregandoVagas.set(false);
+        },
+        error: () => {
+          this.carregandoVagas.set(false);
+        },
+      });
   }
 }

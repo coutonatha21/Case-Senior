@@ -1,5 +1,6 @@
-export interface Vaga {
+export interface Veiculo {
   anoVei: string;
+  codEst: string;
   corVei: string;
   modVei: string;
   nomEmp: string;
@@ -10,12 +11,18 @@ export interface Vaga {
   tipCol: string;
 }
 
+export interface Estacionamento {
+  codEst: string;
+  retVei?: Veiculo | Veiculo[];
+  totVag: string;
+  vagDis: string;
+  vagOcu: string;
+}
+
 export interface Vagas {
   outputData: {
-    retVag: Vaga[];
-    totVag: string;
-    vagDis: string;
-    vagOcu: string;
+    retMsg: string;
+    retVag: Estacionamento[];
     responseCode: number;
   };
 }

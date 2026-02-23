@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpHandler } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
@@ -13,8 +13,8 @@ export class VagasService {
     inputData: {
       module: 'rubi',
       server: `http://${environment.server.acces}:8080`,
-      port: 'Vagas',
-      service: 'case.senior.GestaoEstacionamento',
+      port: 'CRUD_Vagas',
+      service: 'case.senior.gestao.estacionamento',
       encryption: '3',
       user: '',
       password: '',
@@ -24,13 +24,20 @@ export class VagasService {
 
   private http = inject(HttpClient);
 
-  public obterVagas(CodEst: string): Observable<Vagas> {
-    return this.http.post<Vagas>(environment.plugin.invoke, {
+  public obterVagas(tipOpe: string, codEst: string): Observable<Vagas> {
+    const payload = {
       ...this.basePayload,
       inputData: {
         ...this.basePayload.inputData,
-        CodEst,
+        TipOpe: tipOpe,
+        retVag: {
+          CodEst: codEst,
+        },
       },
-    });
+    };
+
+    console.log('Payload enviado para obter vagas:', payload);
+
+    return this.http.post<Vagas>(environment.plugin.invoke, payload);
   }
 }
