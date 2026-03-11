@@ -1,3 +1,5 @@
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog></p-confirmDialog>
 <app-loading [loading]="carregandoVagas()">
   <p-card>
     <ng-template pTemplate="title">
@@ -12,6 +14,7 @@
               [suggestions]="estacionamentosFiltrados"
               (completeMethod)="filtrarEstacionamentos($event)"
               (onSelect)="onEstacionamentoSelect($event.value)"
+              (onClear)="limparFiltro()"
               [dropdown]="true"
               [showEmptyMessage]="true"
               emptyMessage="Nenhum estacionamento encontrado"
@@ -22,36 +25,91 @@
             >
               <ng-template let-estacionamento pTemplate="item">
                 <div>
-                  {{ estacionamento.codEst }} - {{ estacionamento.desEst }} |
-                  {{ estacionamento.qtdVag }} vagas
+                  {{ estacionamento.codEst }} - {{ estacionamento.desEst }}
                 </div>
               </ng-template>
             </p-autoComplete>
           </p-iconField>
         </ng-template>
-        <ng-template pTemplate="center"></ng-template>
-        <ng-template pTemplate="end"></ng-template>
+        <ng-template pTemplate="center"> </ng-template>
+        <ng-template pTemplate="end">
+          <div
+            class="vagas-resumo"
+            [ngClass]="{ 'vagas-resumo--sem-acao': estacionamentoSelecionado.vagDis === '0' }"
+            *ngIf="estacionamentoSelecionado && !carregandoVagas()"
+          >
+            <div class="vagas-resumo__box vagas-resumo__box--total">
+              <span class="vagas-resumo__valor">{{
+                estacionamentoSelecionado.qtdVag
+              }}</span>
+              <span class="vagas-resumo__label">Total</span>
+            </div>
+            <div class="vagas-resumo__box vagas-resumo__box--ocupadas">
+              <span class="vagas-resumo__valor">{{
+                estacionamentoSelecionado.vagOcu
+              }}</span>
+              <span class="vagas-resumo__label">Ocupadas</span>
+            </div>
+            <div class="vagas-resumo__box vagas-resumo__box--disponiveis">
+              <span class="vagas-resumo__valor">{{
+                estacionamentoSelecionado.vagDis
+              }}</span>
+              <span class="vagas-resumo__label">Disponíveis</span>
+            </div>
+            <div
+              class="vagas-resumo__action"
+              *ngIf="
+                estacionamentoSelecionado &&
+                !carregandoVagas() &&
+                estacionamentoSelecionado.vagDis !== '0'
+              ">
+              <a
+                pButton
+                type="button"
+                label="Solicitar Vaga"
+                icon="pi pi-car"
+                class="p-button-sm btn-solicitar-vaga"
+                href="https://platform-homologx.senior.com.br/tecnologia/platform/senior-x/#/Senior%20Flow/1/item-task-center?category=frame&link=https:%2F%2Fplatform-homologx.senior.com.br%2Ftecnologia%2Fplatform%2Fworkflow%2F%23%2Fdashboard%2Ftasks%2Fpending&helpUrl=https:%2F%2Fdocumentacao.senior.com.br%2Fbpm%2F7.0.0%2F&r=1"
+                target="_blank"
+                rel="noopener noreferrer"
+              ></a>
+            </div>
+          </div>
+        </ng-template>
       </p-toolbar>
     </ng-template>
   </p-card>
   <div class="grid mt-1">
     <div class="col-3" *ngFor="let vehicle of vehicles">
       <p-card
-        [style]="{ width: '28rem', overflow: 'hidden' }"
         [ngClass]="{ 'vaga-livre-card': vehicle.owner === 'Livre' }"
         class="card-moderno"
       >
         <ng-template pTemplate="header"></ng-template>
         <ng-template pTemplate="title">
           <div
-            class="vehicle-title"
-            [ngClass]="{ 'vaga-livre': vehicle.owner === 'Livre' }"
+            class="vehicle-title-row"
+            [ngClass]="{ 'vehicle-title-row--free': vehicle.owner === 'Livre' }"
           >
-            {{
-              vehicle.owner === "Livre"
-                ? "VAGA DISPONÍVEL"
-                : vehicle.id + " - " + vehicle.owner
-            }}
+            <div
+              class="vehicle-title"
+              [ngClass]="{ 'vaga-livre': vehicle.owner === 'Livre' }"
+            >
+              {{
+                vehicle.owner === "Livre"
+                  ? "VAGA DISPONÍVEL"
+                  : vehicle.id + " - " + vehicle.owner
+              }}
+            </div>
+            <button
+              *ngIf="vehicle.owner !== 'Livre'"
+              pButton
+              type="button"
+              icon="pi pi-trash"
+              class="p-button-sm p-button-danger p-button-text card-moderno__btn-excluir-icon"
+              (click)="confirmarExclusao(vehicle)"
+              aria-label="Excluir veículo"
+            ></button>
           </div>
         </ng-template>
         <ng-template pTemplate="subtitle">
@@ -68,7 +126,12 @@
               {{ vehicle.owner === "Livre" ? "-" : vehicle.year }}
             </li>
             <li>
-              <i class="pi pi-palette"></i> Cor:
+              <span
+                class="color-swatch"
+                [style.backgroundColor]="getVehicleBackgroundColor(vehicle)"
+                [style.borderColor]="getVehicleBorderColor(vehicle)"
+              ></span>
+              Cor:
               {{ vehicle.owner === "Livre" ? "-" : vehicle.color }}
             </li>
           </ul>

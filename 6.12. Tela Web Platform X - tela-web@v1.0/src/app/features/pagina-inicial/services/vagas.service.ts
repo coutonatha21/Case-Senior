@@ -14,7 +14,7 @@ export class VagasService {
       module: 'rubi',
       server: `http://${environment.server.acces}:8080`,
       port: 'CRUD_Vagas',
-      service: 'case.senior.gestao.estacionamento',
+      service: 'com.senior.case.gestaoEstacionamento',
       encryption: '3',
       user: '',
       password: '',
@@ -24,20 +24,21 @@ export class VagasService {
 
   private http = inject(HttpClient);
 
-  public obterVagas(tipOpe: string, codEst: string): Observable<Vagas> {
+  public manipularVagas(
+    tipOpe: string,
+    codEst: string,
+    plaVei: string,
+  ): Observable<Vagas> {
     const payload = {
       ...this.basePayload,
       inputData: {
         ...this.basePayload.inputData,
         TipOpe: tipOpe,
-        retVag: {
-          CodEst: codEst,
-        },
+        CodEst: codEst,
+        PlaVei: plaVei,
       },
     };
-
-    console.log('Payload enviado para obter vagas:', payload);
-
+    console.log('Payload enviado:', payload);
     return this.http.post<Vagas>(environment.plugin.invoke, payload);
   }
 }

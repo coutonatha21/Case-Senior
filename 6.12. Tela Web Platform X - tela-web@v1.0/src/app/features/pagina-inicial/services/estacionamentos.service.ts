@@ -14,7 +14,7 @@ export class EstacionamentosService {
       module: 'rubi',
       server: `http://${environment.server.acces}:8080`,
       port: 'CRUD_Estacionamentos',
-      service: 'case.senior.gestao.estacionamento',
+      service: 'com.senior.case.gestaoEstacionamento',
       encryption: '3',
       user: '',
       password: '',

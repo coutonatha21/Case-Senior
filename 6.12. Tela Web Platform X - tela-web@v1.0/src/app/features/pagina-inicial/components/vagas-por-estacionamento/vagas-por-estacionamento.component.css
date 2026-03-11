@@ -15,6 +15,31 @@
   padding-bottom: 10px;
 }
 
+:host ::ng-deep .p-autocomplete .p-autocomplete-dropdown {
+  background-color: #26a69a;
+  border-color: #26a69a;
+}
+
+:host ::ng-deep .p-autocomplete .p-autocomplete-dropdown:hover {
+  background-color: #1f8e84;
+  border-color: #1f8e84;
+}
+
+:host ::ng-deep .p-autocomplete .p-inputtext:enabled:focus {
+  border-color: #26a69a;
+  box-shadow: 0 0 0 0.2rem rgba(38, 166, 154, 0.2);
+}
+
+:host ::ng-deep .btn-solicitar-vaga.p-button {
+  background-color: #26a69a;
+  border-color: #26a69a;
+}
+
+:host ::ng-deep .btn-solicitar-vaga.p-button:hover {
+  background-color: #1f8e84;
+  border-color: #1f8e84;
+}
+
 .pi {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -35,7 +60,11 @@
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.06);
+  border-left: 6px solid #bdbdbd;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  color: #111827;
+  transition: all 0.25s ease;
 }
 
 :host ::ng-deep .card-moderno .p-card-body {
@@ -45,12 +74,21 @@
 :host ::ng-deep .card-moderno .p-card-title {
   font-weight: 700;
   font-size: 1.05rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 :host ::ng-deep .card-moderno .p-card-subtitle {
   margin-top: 0;
   opacity: 0.8;
+}
+
+:host ::ng-deep .card-moderno .p-card-title,
+:host ::ng-deep .card-moderno .p-card-subtitle,
+:host ::ng-deep .card-moderno .p-card-content,
+:host ::ng-deep .card-moderno .p-card-footer,
+:host ::ng-deep .card-moderno .pi {
+  color: inherit;
 }
 
 :host ::ng-deep .card-moderno .p-card-footer {
@@ -78,12 +116,126 @@
   opacity: 0.75;
 }
 
+.color-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  border: 1px solid #6b7280;
+  display: inline-block;
+  flex: 0 0 14px;
+}
+
+.vagas-resumo {
+  display: grid;
+  grid-template-columns: repeat(3, 96px) 192px;
+  gap: 0.75rem;
+  align-items: stretch;
+  justify-content: end;
+}
+
+.vagas-resumo.vagas-resumo--sem-acao {
+  grid-template-columns: repeat(3, 96px);
+}
+
+.vagas-resumo__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 59px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.vagas-resumo__action {
+  width: 192px;
+  height: 59px;
+}
+
+:host ::ng-deep .vagas-resumo__action .btn-solicitar-vaga.p-button {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+@media (max-width: 1200px) {
+  .vagas-resumo {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+  }
+
+  .vagas-resumo__box,
+  .vagas-resumo__action {
+    width: 100%;
+  }
+
+  .vagas-resumo__action {
+    grid-column: span 2;
+  }
+}
+
+.vagas-resumo__valor {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.vagas-resumo__label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.75;
+}
+
+.vagas-resumo__box--total {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border-color: #bfdbfe;
+}
+
+.vagas-resumo__box--ocupadas {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.vagas-resumo__box--disponiveis {
+  background-color: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
 .vehicle-title {
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   display: block;
-  margin-bottom: -1rem;
+}
+
+.vehicle-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 1.75rem;
+}
+
+.vehicle-title-row--free {
+  justify-content: center;
+}
+
+:host ::ng-deep .card-moderno__btn-excluir-icon.p-button {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+}
+
+:host ::ng-deep .card-moderno__btn-excluir-icon .pi {
+  color: #26a69a;
+  opacity: 1;
 }
 
 .vehicle-title.vaga-livre {
@@ -91,12 +243,6 @@
   text-align: center;
 }
 
-:host ::ng-deep .vaga-livre-card {
+:host ::ng-deep .vaga-livre-card { 
   border-color: #26a69a !important;
-  cursor: pointer;
-}
-:host ::ng-deep .card-moderno.p-card {
-  border-radius: 16px;
-  border-left: 6px solid var(--card-color, #bdbdbd);
-  transition: all 0.25s ease;
 }

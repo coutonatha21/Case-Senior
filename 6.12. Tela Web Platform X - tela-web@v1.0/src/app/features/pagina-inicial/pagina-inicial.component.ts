@@ -10,7 +10,7 @@ import { finalize } from 'rxjs';
   standalone: true,
   imports: [vagasPorEstacionamento, LoadingComponent],
   templateUrl: './pagina-inicial.component.html',
-  styleUrl: './pagina-inicial.component.css',
+  styleUrls: ['./pagina-inicial.component.css'],
 })
 export class PaginaInicialComponent implements OnInit {
   private EstacionamentosService = inject(EstacionamentosService);

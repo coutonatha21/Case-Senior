@@ -1,0 +1,130 @@
+Definir Funcao FMontaColunasEmail();
+
+Definir Alfa estCur;   
+Definir Alfa vagCur;  
+Definir Alfa aCodEst;
+Definir Alfa aDesEst;
+Definir Alfa aMsgEst;
+Definir Alfa aNumCad;
+Definir Alfa aNomFun;
+Definir Alfa aNumCpf; 
+Definir Alfa aColTab; 
+Definir Alfa aTotVag; 
+Definir Alfa aVagOcu; 
+Definir Alfa aVagDis;  
+Definir Alfa aTxtEma; 
+Definir Alfa aAnxEma;
+Definir Alfa aAssEma;
+Definir Alfa aCcoEma;
+Definir Alfa aRmtEma;       
+Definir Alfa aCcpEma;     
+Definir Alfa aDstEma;  
+  
+aTxtEma = "";   
+aAnxEma = "";   
+aAssEma = "";   
+aCcoEma = "";   
+aRmtEma = "";  
+aCcpEma = "";
+aDstEma = "nathanael.felipe@consultorseniorsistemas.com.br";
+
+SQL_Criar(estCur);
+SQL_UsarAbrangencia(estCur, 0);
+SQL_UsarSqlSenior2(estCur, 0);
+SQL_DefinirComando(estCur, "SELECT * \ 
+                              FROM USU_T100EST EST \
+                             ORDER BY USU_CODEST");			 
+
+SQL_AbrirCursor(estCur);
+Enquanto(SQL_EOF(estCur) = 0){
+
+  nVagOcu = 0;
+  aColTab = "";
+  aMsgEst = "";
+
+  SQL_RetornarInteiro(estCur, "USU_CODEST", nCodEst); 
+  IntParaAlfa(nCodEst, aCodEst); 
+  SQL_RetornarAlfa(estCur, "USU_DESEST", aDesEst);  
+  SQL_RetornarInteiro(estCur, "USU_QTDVAG", nTotVag);  
+  
+  SQL_Criar(vagCur);
+  SQL_UsarAbrangencia(vagCur, 0);
+  SQL_UsarSqlSenior2(vagCur, 0);
+  SQL_DefinirComando(vagCur, "SELECT * \ 
+                                FROM USU_T100VAG VAG \
+                          INNER JOIN USU_T100EST EST \
+                                  ON EST.USU_CODEST = VAG.USU_CODEST \  
+                          INNER JOIN USU_T100VEI VEI \
+                                  ON VEI.USU_PLAVEI = VAG.USU_PLAVEI \    
+                          INNER JOIN R034FUN FUN \
+                                  ON FUN.NUMEMP = VEI.USU_NUMEMP \  
+                                 AND FUN.TIPCOL = VEI.USU_TIPCOL \  
+                                 AND FUN.NUMCAD = VEI.USU_NUMCAD \
+                               WHERE VAG.USU_CODEST = :nCodEst");		
+                                                          
+  SQL_DefinirInteiro(vagCur, "nCodEst", nCodEst);		 
+  
+  SQL_AbrirCursor(vagCur);
+  Enquanto(SQL_EOF(vagCur) = 0){
+  
+    nVagOcu++;
+
+    SQL_RetornarInteiro(vagCur, "USU_NUMCAD", nNumCad);  
+    SQL_RetornarAlfa(vagCur, "NOMFUN", aNomFun);    
+    SQL_RetornarInteiro(vagCur, "NUMCPF", nNumCpf); 
+    
+    FMontaColunasEmail();
+    
+    SQL_Proximo(vagCur);
+  }
+  SQL_FecharCursor(vagCur);
+  SQL_Destruir(vagCur);
+  
+  nVagDis = nTotVag - nVagOcu;
+  
+  IntParaAlfa(nTotVag, aTotVag);
+  IntParaAlfa(nVagOcu, aVagOcu);
+  IntParaAlfa(nVagDis, aVagDis);
+  
+  Se(nVagOcu > 0){
+    
+    aMsgEst = "<p>Total de Vagas Ocupadas no Estacionamento: " + aVagOcu + " </br>";  
+  }
+  
+  aAssEma = "Senior | Status Diário Estacionamentos | Estacionamento: " + aCodEst + " - " + aDesEst;
+  aTxtEma = "<!DOCTYPE html> <div> <font face=\"Calibri, Geneva, sans-serif\" size=\"3.0pt\">" +
+            "<p>Total de Vagas no Estacionamento: " + aTotVag + " </br>" + 
+            aMsgEst + 
+            "<p>Total de Vagas Disponíveis no Estacionamento: " + aVagDis + " </br>" + 
+            "<table border=\"1px\", bgcolor= \"#e7e8e9\", font face=\"Calibri, Geneva, sans-serif\", size=\"3.0pt\">" +
+            "<style>  tr:nth-child(even) {background-color: #cbcdcf;}; </style>" +
+            "<tr bgcolor=\"#002b49\", font face=\"Calibri, Geneva, sans-serif\", size=\"3.0pt\", style=\"color: white\">" +                    
+            aColTab +
+            "</table>" +  
+            "</div>";
+            
+  EnviaEmailHTML(aRmtEma, aDstEma, aCcpEma, aCcoEma, aAssEma, aTxtEma, aAnxEma, 1, 0);  
+  SQL_Proximo(estCur);  
+}
+SQL_FecharCursor(estCur); 
+SQL_Destruir(estCur);  
+ 
+ 
+Funcao FMontaColunasEmail();{
+ 
+  IntParaAlfa(nNumCad, aNumCad);
+  ConverteMascara(1, nNumCpf, aNumCpf, "999.999.999-99");
+  
+  Se(nVagOcu = 1){
+  
+    aColTab = aColTab + "      <td>Matrícula</td>                     " +    
+                        "      <td>Colaborador</td>                   " +      
+                        "      <td>CPF</td>                           "; 
+  }
+ 
+  aColTab = aColTab + " <tr font face=\"Calibri, Geneva, sans-serif\", size=\"3.0pt\"> " +
+                      "      <td> " + aNumCad + " </td> " +
+                      "      <td> " + aNomFun + " </td> " +
+                      "      <td> " + aNumCpf + " </td> " +
+                      " </tr>                           "; 
+}
