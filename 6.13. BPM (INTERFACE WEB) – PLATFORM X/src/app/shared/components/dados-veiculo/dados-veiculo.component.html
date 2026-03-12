@@ -1,0 +1,42 @@
+<hst-card 
+  [titulo]="'Dados do Veículo'">
+
+  <form [formGroup]="formulario" class="grid">
+
+    <div class="col-4">
+      <hst-input
+        type="text"
+        label="Placa (ABC1D23)"
+        formControlName="PlaVei"
+        [errorsMessage]="errorsMessage"
+      />
+    </div>
+
+    <div class="col-4 teste">
+      <hst-input
+        class="teste"
+        type="text"
+        label="Modelo"
+        placeholder="Ex: Corolla" 
+        formControlName="ModVei"
+        [errorsMessage]="errorsMessage"
+      />
+    </div>
+
+    <div class="col-4 ">
+      <app-select #cor [config]="coresConfig" formControlName="CorVei"></app-select>   
+    </div>
+
+    <div class="col-4">
+      <hst-input
+        type="text"
+        label="Ano"
+        mask="0000"
+        formControlName="AnoVei"
+        [errorsMessage]="errorsMessage"
+      />
+    </div>
+
+  </form>
+</hst-card>
+

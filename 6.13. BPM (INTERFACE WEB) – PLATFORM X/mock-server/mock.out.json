@@ -1,0 +1,21 @@
+{
+  "rubi": {
+    "com.senior.automacao.bpm.treinamento": {
+      "insertVeiculos": {
+        "ARetorno": "OK"
+      },
+      "dadosSolicitante": {
+        "ARetorno": "OK",
+        "NNumEmp": "1",
+        "NTipCol": "1",
+        "NNumCad": "10",
+        "ANomFun": "Yan Souza",
+        "ANomEmp": "Senior",
+        "NCodFil": "1",
+        "ANomFil": "Matriz Blumenau",
+        "ANomCCU": "Torre HCM",
+        "AEhGestor": "N"
+      }
+    }
+  }
+}
