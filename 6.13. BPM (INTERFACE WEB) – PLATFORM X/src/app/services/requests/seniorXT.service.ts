@@ -31,12 +31,12 @@ export class SeniorXTService {
    */
   cadastrarVeiculo(args?: Record<string, string>): Observable<void> {
 
-    console.log(args)
-
     const dadosEnvio: any = {
       TipOpe: "C",
-      RetVei: [args],  // Agora é um array, não string
+      RetVei: [args], 
     };
+
+    console.log('2 - Dados enviados para cadastro: ', dadosEnvio);
 
     return this.invoke.obterDadosXT<RetornoDadosVeiculosDTO>(
       rubi.treinamento.service,
@@ -47,6 +47,7 @@ export class SeniorXTService {
     ).pipe(
       take(1),
       map(() => {
+        console.log('3 - Cadastro realizado com sucesso', rubi.treinamento.ports.veiculos);
         return void 0;
       })
     );

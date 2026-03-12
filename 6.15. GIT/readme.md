@@ -1,54 +1,70 @@
-# Case Senior – Automação e Customização
+# Case Senior - Gestão de Estacionamento
 
-Repositório contendo os artefatos desenvolvidos no case técnico da plataforma Senior.
+Repositório para subir os artefatos desenvolvidos no case de desenvolvimento Senior. Este projeto contempla a integração entre o **Senior XT (G5)** e a **Plataforma Senior X (G7)** para a gestão eficiente de vagas de estacionamento.
+
+---
+
+## 📂 Estrutura do Projeto
+
+Abaixo estão os links para cada componente da solução, organizados conforme a estrutura de pastas do repositório:
+
+| Item | Artefato | Descrição |
+| :--- | :--- | :--- |
+| 📁 | [6.01 & 6.02. Telas + Tabelas](#601--602-telas--tabelas) | Estrutura de dados e interfaces de cadastro na XT. |
+| 📁 | [6.03. Relatórios - XT](#603-relatórios---xt) | Modelos de Termo de Responsabilidade e Exportação CSV. |
+| 📁 | [6.04. Importador - XT](#604-importador---xt) | Rotina para cadastro de veículos em lote. |
+| 📁 | [6.05. Regra - XT](#605-regra---xt) | Automação para envio de e-mail de status diário. |
+| 📁 | [6.06. Webservice - XT](#606-webservice---xt) | Serviços de integração para comunicação com o BPM. |
+| 📁 | [6.07. Menus - XT](#607-menus---xt) | Configuração do menu personalizado na G5. |
+| 📁 | [6.08. BPM - PLATFORM X](#608-bpm---platform-x) | Fluxo de solicitação de vagas com assinatura digital. |
+| 📁 | [6.09. VISÃO DINÂMICA - PLATFORM X](#609-visão-dinâmica---platform-x) | Consultas dinâmicas de cadastros e solicitações. |
+| 📁 | [6.10. ANALYTICS - PLATFORM X](#610-analytics---platform-x) | Painéis gerenciais e indicadores de ocupação. |
+| 📁 | [6.11. BOT](#611-bot) | Assistente virtual para consulta de vagas disponíveis. |
+| 📁 | [6.12. Tela Web Platform X - tela-web@v1.0](#612-tela-web-platform-x---tela-webv10) | Interface interativa em Angular/PrimeNG. |
+| 📁 | [6.13. BPM (INTERFACE WEB) - PLATFORM X](#613-bpm-interface-web---platform-x) | Fluxo web para cadastro de veículos. |
+| 📁 | [6.14. MENU - PLATFORM X](#614-menu---platform-x) | Parametrização de menus na Plataforma X. |
+| 📁 | [6.15. GIT](#615-git) | Documentação de versionamento e repositório. |
+| 📁 | [6.16. MANUAL DE USUÁRIO](#616-manual-de-usuário) | Guias de utilização para colaboradores e gestores. |
 
 ---
 
-# Estrutura do Projeto
+## 🛠️ Detalhes das Configurações
 
-| Módulo | Descrição |
-|------|------|
-| [6.1 & 6.2 Telas + Tabelas](./6.1%20%26%206.2.%20Telas%20+%20Tabelas) | Estrutura de telas e tabelas |
-| [6.03 Relatórios - XT](./6.03.%20Relatórios%20-%20XT) | Relatórios desenvolvidos em XT |
-| [6.04 Importador - XT](./6.04.%20Importador%20-%20XT) | Rotinas de importação |
-| [6.05 Regra - XT](./6.05.%20Regra%20-%20XT) | Regras de negócio |
-| [6.06 Webservice - XT](./6.06.%20Webservice%20-%20XT) | Integrações via Webservice |
-| [6.07 Menus - XT](./6.07.%20Menus%20-%20XT) | Estrutura de menus |
-| [6.08 BPM – PLATFORM X](./6.08.%20BPM%20%E2%80%93%20PLATFORM%20X) | Processos BPM |
-| [6.09 VISÃO DINÂMICA – PLATFORM X](./6.09.%20VISÃO%20DINÂMICA%20%E2%80%93%20PLATFORM%20X) | Visões dinâmicas |
-| [6.10 ANALYTICS – PLATFORM X](./6.10.%20ANALYTICS%20%E2%80%93%20PLATFORM%20X) | Analytics |
-| [6.11 BOT](./6.11.%20BOT) | Automações via BOT |
-| [6.12 Tela Web Platform X](./6.12.%20Tela%20Web%20Platform%20X%20-%20tela-web@v1.0) | Interface web |
-| [6.13 BPM (INTERFACE WEB) – PLATFORM X](./6.13.%20BPM%20%28INTERFACE%20WEB%29%20%E2%80%93%20PLATFORM%20X) | BPM Web |
-| [6.14 MENU – PLATFORM X](./6.14.%20MENU%20%E2%80%93%20PLATFORM%20X) | Menu do sistema |
-| [6.15 GIT](./6.15.%20GIT) | Controle de versão |
-| [6.16 MANUAL DE USUÁRIO](./6.16.%20MANUAL%20DE%20USUÁRIO) | Documentação |
+### 6.01. & 6.02. Telas + Tabelas
+- **Tabelas:** Criação das tabelas `USU_T120EST` (Estacionamento), `USU_T120VEI` (Veículos) e a tabela de vagas com ligação N:N, `USU_T120VAG`.
+- **Telas:** Telas SGI para manutenção de dados com validações de campos obrigatórios e bloqueio de edição após inserção.
 
----
-preciso que tenha infortmado configuração de instalação da rotina, ela deve conter os seguintes tópicos.  
+### 6.03. Relatórios - XT
+- **Termo de Responsabilidade:** Relatório em PDF com texto jurídico dinâmico para assinatura.
+- **Relatório de Vagas:** Exportação em formato `.csv` para conferência de ocupação.
 
- Tabelas
-A estrutura de tabelas deve ser replicada no banco de dados pelo CBDS à partir do arquivo vetor.tbs
+### 6.04. Importador - XT
+- **Modelo 701:** Importação via arquivo CSV com delimitador `;`. Permite o cadastro massivo de veículos vinculados aos colaboradores.
 
- Telas
-As telas devem ser importadas por meio do gerador de telas SGI no XT.
+### 6.05. Regra - XT
+- **Processo Automático:** Regra `001` vinculada a um processo agendado para envio de e-mail diário com o resumo de vagas ocupadas e disponíveis.
 
- Relatórios
-Os modelos devem ser movidos para a pasta vetorh/modelos, na raiz da instalação do XT.
- Importador
-O importador deve ser movido para a pasta vetorh/imp-exp, na raiz da instalação do XT. 
- Regras
-A regra deve ser movida para a pasta vetorh/regras, na raiz da instalação do XT
- WS
-O webservice deve ser importado para 
- BPM (ECM)
- BPM (WEB)
- Tela WEB
- Analytics
- BOT
- Visão Dinâmica 
+### 6.06. Webservice - XT
+- **Integração:** Disponibilização de serviços SOAP/REST para que o BPM da Plataforma X possa realizar operações de CRUD nas tabelas da G5.
+
+### 6.08. BPM - PLATFORM X
+- **Fluxo ECM:** Gerenciamento da solicitação de vaga, integrando com o GED para armazenamento do termo e Senior SIGN para assinatura eletrônica.
+- **Fluxo WEB:** Solicitações de cadastros de veículos. Desenvolvido em Angular utilizando o framework **PrimeNG**.
+
+### 6.12. Tela Web Platform X
+- **Tela Web** Dashboard interativo com status das vagas e ações administrativas para o gestor. Desenvolvido em Angular utilizando o framework **PrimeNG**.
 
 ---
-# Autor
 
-**Nathanael Couto**
+## 🚀 Como Instalar
+6.01. & 6.02. Utilize o arquivo `vetor.tbs` para visualizar e copiar a estrutura das tabelas. Importe as interfaces e formulários através do SGI.
+6.03. Os arquivos dos relatórios devem ser movidos para a pasta vetorh/Modelos, na raiz da instalação do XT.
+6.04. O arquivo do importador deve ser movido para a pasta vetorh/ImpExp, na raiz da instalação do XT.
+6.05. O arquivo da regra deve ser movido para a pasta vetorh/Regras, na raiz da instalação do XT.
+6.06. Os webservices podem ser importados através do Editor de Webservices.
+6.08. Importe os arquivos `.zip` na plataforma e execute o projeto e execute o comando `npm run start`.
+6.12. Configure o menu/tela na plataforma apontando para a URL https://localhost:4200/ e e execute o comando `npm run start`.
+
+---
+**Desenvolvido por:** Nathanael Felipe
+**Status:** Versão 1.0

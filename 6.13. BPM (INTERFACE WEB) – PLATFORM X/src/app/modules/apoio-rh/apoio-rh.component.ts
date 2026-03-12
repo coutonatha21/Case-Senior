@@ -5,7 +5,7 @@ import { DadosSolicitanteComponent } from '@components/dados-solicitante/dados-s
 import { DadosVeiculoComponent } from '@components/dados-veiculo/dados-veiculo.component';
 import { ComponenteLoadingService } from '../../services/utils/componente-loading.service';
 import { NotificationService } from '@services/utils/notification.service';
-import { catchError, EMPTY, finalize, take } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { VariaveisProcessoDTO, VariaveisProcessoG7DTO } from '../../shared/models/variaveis-processo.model';
 import { EtapaModel } from '../etapa.model';
 import { SeniorXTService } from '@services/requests/seniorXT.service';
@@ -67,27 +67,28 @@ export class ApoioRhComponent implements EtapaModel{
     };
   }
 
-  async enviarFormulario(step: WfProcessStep): Promise<WfFormData | undefined>{
-    if(step.nextAction.name === 'Aprovar'){
+  async enviarFormulario(step: WfProcessStep): Promise<WfFormData | undefined> {
+    if (step.nextAction.name === 'Aprovar Cadastro') {
 
       this.componenteLoadingService.iniciarLoadingDinamico();
+      console.log('1 - Iniciando processo de integração', step.nextAction.name, 'Dados do veículo: ', this.variaveisProcesso.dadosVeiculo);
 
-      this.seniorXT.cadastrarVeiculo({ ...this.variaveisProcesso.dadosVeiculo }).pipe(
-        take(1),
-        catchError((err) => {
-          console.error('Erro ao integrar os dados: ', err);
-          this.notification.requestError('Erro ao integrar os dados. Verifique!');
-          this.wfService.abortSubmit();
-          return EMPTY;
-        }),
-        finalize(() => {
-          this.componenteLoadingService.finalizarLoadingDinamico();
-        })
-      ).subscribe(
-        (response) => {
-          this.notification.formSucess('Integrado com sucesso.');
-        }
-      );
+      try {
+        const response = await firstValueFrom(
+          this.seniorXT.cadastrarVeiculo({ ...this.variaveisProcesso.dadosVeiculo })
+        );
+        console.log('2 - Resposta da integração: ', response);
+        this.notification.formSucess('Integrado com sucesso.');
+        return { formData: this.montaFormData(step.nextAction.name) };
+      } catch (err) {
+        console.error('Erro ao integrar os dados: ', err);
+        this.notification.requestError('Erro ao integrar os dados. Verifique!');
+        this.wfService.abortSubmit();
+        return undefined;
+      } finally {
+        console.log('3 - Finalizando processo de integração', step.nextAction.name);
+        this.componenteLoadingService.finalizarLoadingDinamico();
+      }
 
     }
 

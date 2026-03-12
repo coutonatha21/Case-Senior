@@ -111,8 +111,8 @@ export class InvokeService {
       throw new Error(response.message)
     }
     if(response.responseCode == 200){
-      if(!response.ARetorno || response.ARetorno.toLocaleUpperCase() != "OK"){
-        throw new Error(response?.ARetorno || "Não foi encontrado o ARetorno do Webservice!");
+      if(response.ARetorno && response.ARetorno.toLocaleUpperCase() != "OK"){
+        throw new Error(response.ARetorno);
       }
     }
     return;

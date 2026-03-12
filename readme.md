@@ -58,11 +58,17 @@ Abaixo estão os links para cada componente da solução, organizados conforme a
 
 ## 🚀 Como Instalar
 6.01. & 6.02. Utilize o arquivo `vetor.tbs` para visualizar e copiar a estrutura das tabelas. Importe as interfaces e formulários através do SGI.
+
 6.03. Os arquivos dos relatórios devem ser movidos para a pasta vetorh/Modelos, na raiz da instalação do XT.
+
 6.04. O arquivo do importador deve ser movido para a pasta vetorh/ImpExp, na raiz da instalação do XT.
+
 6.05. O arquivo da regra deve ser movido para a pasta vetorh/Regras, na raiz da instalação do XT.
+
 6.06. Os webservices podem ser importados através do Editor de Webservices.
+
 6.08. Importe os arquivos `.zip` na plataforma e execute o projeto e execute o comando `npm run start`.
+
 6.12. Configure o menu/tela na plataforma apontando para a URL https://localhost:4200/ e e execute o comando `npm run start`.
 
 ---

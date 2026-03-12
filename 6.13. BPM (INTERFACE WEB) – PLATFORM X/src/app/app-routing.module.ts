@@ -15,6 +15,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'revisao',
+    loadChildren: () =>
+      import('./modules/revisao/revisao.module').then(
+        (m) => m.RevisaoModule
+      ),
+  },
+  {
     path: 'apoio-rh',
     loadChildren: () =>
       import('./modules/apoio-rh/apoio-rh.module').then(
