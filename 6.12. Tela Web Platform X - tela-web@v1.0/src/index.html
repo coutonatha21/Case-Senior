@@ -1,13 +1,37 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>TelaWeb</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>TelaWeb</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>
+<script>
+  (function (d, s, id) {
+    var js,
+      fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {
+      return;
+    }
+    js = d.createElement(s);
+    js.id = id;
+    js.src =
+      "https://cdn.tecnologia.senior.com.br/platform/botfactory/conversation/production/bundle.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  })(document, "script", "botfactory-sdk");
+  (function () {
+    window.onload = function () {
+      window.BotFactory.init({
+        appKey:
+          "QSklzoGTtsHJNHyc;9TwGB5BBd56USha9tjVS9V1JcTragJYAS9DauHe3fwoEmfbpneAhYr7ipK+zekZQv4n7SNNx1jv7qBb179pGiA==",
+        restUrl:
+          "https://platform-homologx.senior.com.br/t/senior.com.br/bridge/1.0/rest/",
+      });
+    };
+  })();
+</script>

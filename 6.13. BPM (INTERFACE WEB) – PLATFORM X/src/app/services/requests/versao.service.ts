@@ -23,8 +23,5 @@ export class VersaoService {
           return v.versao;
         })
       );
-
-    // Busca de versão fixa para desenvolvimento
-    //return of('1.0.0');
   }
 }

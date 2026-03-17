@@ -66,6 +66,7 @@ export class vagasPorEstacionamento {
 
   protected vehicles: any[] = [];
   protected carregandoVagas = signal(false);
+  protected estacionamentoBusca?: Estacionamento | string;
   protected estacionamentoSelecionado?: Estacionamento;
   protected estacionamentosFiltrados: Estacionamento[] = [];
 
@@ -87,8 +88,21 @@ export class vagasPorEstacionamento {
   }
 
   limparFiltro() {
+    this.estacionamentoBusca = undefined;
     this.estacionamentoSelecionado = undefined;
     this.vehicles = [];
+  }
+
+  onEstacionamentoChange(value: Estacionamento | string | undefined) {
+    this.estacionamentoBusca = value;
+
+    if (!this.isEstacionamentoValido(value)) {
+      this.estacionamentoSelecionado = undefined;
+      this.vehicles = [];
+      return;
+    }
+
+    this.estacionamentoSelecionado = value;
   }
 
   confirmarExclusao(vehicle: any) {
@@ -169,6 +183,7 @@ export class vagasPorEstacionamento {
   }
 
   onEstacionamentoSelect(estacionamento: Estacionamento) {
+    this.estacionamentoBusca = estacionamento;
     this.estacionamentoSelecionado = estacionamento;
     this.carregandoVagas.set(true);
 
@@ -261,6 +276,10 @@ export class vagasPorEstacionamento {
     }
   }
 
+  protected possuiEstacionamentoSelecionadoValido(): boolean {
+    return this.isEstacionamentoValido(this.estacionamentoSelecionado);
+  }
+
   private getVehicleCardPalette(vehicle: any): {
     background: string;
     border: string;
@@ -276,5 +295,11 @@ export class vagasPorEstacionamento {
         border: '#bdbdbd',
       }
     );
+  }
+
+  private isEstacionamentoValido(
+    estacionamento: Estacionamento | string | undefined,
+  ): estacionamento is Estacionamento {
+    return !!estacionamento && typeof estacionamento !== 'string';
   }
 }

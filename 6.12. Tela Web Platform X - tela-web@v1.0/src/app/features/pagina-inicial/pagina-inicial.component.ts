@@ -21,6 +21,7 @@ export class PaginaInicialComponent implements OnInit {
   protected carregandoInformacoes = signal(false);
 
   ngOnInit(): void {
+    console.log('Obtendo informações dos estacionamentos...');  
     this.carregandoInformacoes.set(true);
     this.EstacionamentosService.obterEstacionamentos('R')
       .pipe(

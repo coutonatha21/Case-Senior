@@ -15,7 +15,7 @@ export const environment = {
     response_timeout: 'https://platform.senior.com.br/t/senior.com.br/bridge/1.0/rest/platform/bpm_timeout/queries/getTicketResponse'
   },
   webServices: {
-    baseUrl: 'http://ec2-54-196-58-110.compute-1.amazonaws.com:8080',
+    baseUrl: 'http://ec2-34-238-164-59.compute-1.amazonaws.com:8080',
     module: 'rubi',
     encryption: '3',
     user: '',

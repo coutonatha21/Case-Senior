@@ -10,12 +10,14 @@
         <ng-template pTemplate="start">
           <p-iconField iconPosition="right">
             <p-autoComplete
-              [(ngModel)]="estacionamentoSelecionado"
+              [(ngModel)]="estacionamentoBusca"
+              (ngModelChange)="onEstacionamentoChange($event)"
               [suggestions]="estacionamentosFiltrados"
               (completeMethod)="filtrarEstacionamentos($event)"
               (onSelect)="onEstacionamentoSelect($event.value)"
               (onClear)="limparFiltro()"
               [dropdown]="true"
+              [forceSelection]="true"
               [showEmptyMessage]="true"
               emptyMessage="Nenhum estacionamento encontrado"
               placeholder="Estacionamento"
@@ -35,24 +37,24 @@
         <ng-template pTemplate="end">
           <div
             class="vagas-resumo"
-            [ngClass]="{ 'vagas-resumo--sem-acao': estacionamentoSelecionado.vagDis === '0' }"
-            *ngIf="estacionamentoSelecionado && !carregandoVagas()"
+            [ngClass]="{ 'vagas-resumo--sem-acao': estacionamentoSelecionado?.vagDis === '0' }"
+            *ngIf="possuiEstacionamentoSelecionadoValido() && !carregandoVagas()"
           >
             <div class="vagas-resumo__box vagas-resumo__box--total">
               <span class="vagas-resumo__valor">{{
-                estacionamentoSelecionado.qtdVag
+                estacionamentoSelecionado?.qtdVag
               }}</span>
               <span class="vagas-resumo__label">Total</span>
             </div>
             <div class="vagas-resumo__box vagas-resumo__box--ocupadas">
               <span class="vagas-resumo__valor">{{
-                estacionamentoSelecionado.vagOcu
+                estacionamentoSelecionado?.vagOcu
               }}</span>
               <span class="vagas-resumo__label">Ocupadas</span>
             </div>
             <div class="vagas-resumo__box vagas-resumo__box--disponiveis">
               <span class="vagas-resumo__valor">{{
-                estacionamentoSelecionado.vagDis
+                estacionamentoSelecionado?.vagDis
               }}</span>
               <span class="vagas-resumo__label">Disponíveis</span>
             </div>
@@ -69,7 +71,7 @@
                 label="Solicitar Vaga"
                 icon="pi pi-car"
                 class="p-button-sm btn-solicitar-vaga"
-                href="https://platform-homologx.senior.com.br/tecnologia/platform/senior-x/#/Senior%20Flow/1/item-task-center?category=frame&link=https:%2F%2Fplatform-homologx.senior.com.br%2Ftecnologia%2Fplatform%2Fworkflow%2F%23%2Fdashboard%2Ftasks%2Fpending&helpUrl=https:%2F%2Fdocumentacao.senior.com.br%2Fbpm%2F7.0.0%2F&r=1"
+                href="https://platform-homologx.senior.com.br/tecnologia/platform/cockpit-frontend/#/app/newrequest/new-process/3/37"
                 target="_blank"
                 rel="noopener noreferrer"
               ></a>

@@ -89,7 +89,6 @@ export class ApoioRhComponent implements EtapaModel{
         console.log('3 - Finalizando processo de integração', step.nextAction.name);
         this.componenteLoadingService.finalizarLoadingDinamico();
       }
-
     }
 
     return {

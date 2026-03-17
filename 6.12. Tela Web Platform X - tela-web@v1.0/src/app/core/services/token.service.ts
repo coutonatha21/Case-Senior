@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, fromEvent, map, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, filter, fromEvent, map, Observable, of, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +12,28 @@ export class TokenService {
       switchMap((token) => {
         return token !== undefined
         ? of(token)
-        : fromEvent(window, "message").pipe(
-          map<any, Token>((evento) => {
-            return{
-              accessToken: evento.data.token.access_token,
-              tokenType: evento.data.token.token_type,
-            }
-          }),
+        : fromEvent<MessageEvent>(window, "message").pipe(
+          map((evento) => this.extrairToken(evento)),
+          filter((tokenExtraido): tokenExtraido is Token => tokenExtraido !== undefined),
           tap((novoToken) => {
             this.token$.next(novoToken);
           })
         )
       })
     )
+  }
+
+  private extrairToken(evento: MessageEvent): Token | undefined {
+    const data = evento?.data as {
+      token?: { access_token?: string; token_type?: string };
+    };
+
+    const accessToken = data?.token?.access_token;
+    const tokenType = data?.token?.token_type;
+
+    return accessToken && tokenType
+      ? { accessToken, tokenType }
+      : undefined;
   }
 }
 
