@@ -2,6 +2,16 @@
   font-family: "Open Sans", HelveticaNeue, Helvetica, Arial, sans-serif;
 }
 
+.vagas-layout {
+  width: 100%;
+}
+
+:host ::ng-deep .painel-vagas.p-card,
+:host ::ng-deep .painel-vagas .p-card-body,
+:host ::ng-deep .painel-vagas .p-card-content {
+  width: 100%;
+}
+
 :host ::ng-deep .p-card {
   border-radius: 0;
 }
@@ -133,6 +143,33 @@
   justify-content: end;
 }
 
+:host ::ng-deep .vagas-toolbar.p-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+:host ::ng-deep .vagas-toolbar .p-toolbar-group-start,
+:host ::ng-deep .vagas-toolbar .p-toolbar-group-end {
+  flex: 1 1 360px;
+  min-width: 260px;
+}
+
+:host ::ng-deep .vagas-toolbar .p-toolbar-group-end {
+  justify-content: flex-end;
+}
+
+.toolbar-busca {
+  width: 100%;
+  max-width: 560px;
+}
+
+:host ::ng-deep .toolbar-busca .p-autocomplete,
+:host ::ng-deep .toolbar-busca .p-autocomplete-input,
+:host ::ng-deep .toolbar-busca .p-inputtext {
+  width: 100%;
+}
+
 .vagas-resumo.vagas-resumo--sem-acao {
   grid-template-columns: repeat(3, 96px);
 }
@@ -161,9 +198,23 @@
 }
 
 @media (max-width: 1200px) {
+  :host ::ng-deep .vagas-toolbar .p-toolbar-group-start,
+  :host ::ng-deep .vagas-toolbar .p-toolbar-group-end {
+    flex: 1 1 100%;
+  }
+
+  :host ::ng-deep .vagas-toolbar .p-toolbar-group-end {
+    justify-content: flex-start;
+  }
+
+  .toolbar-busca {
+    max-width: 100%;
+  }
+
   .vagas-resumo {
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
+    justify-content: stretch;
   }
 
   .vagas-resumo__box,
@@ -173,6 +224,43 @@
 
   .vagas-resumo__action {
     grid-column: span 2;
+  }
+}
+
+@media (max-width: 640px) {
+  :host ::ng-deep .p-card .p-card-body {
+    padding: 0.875rem;
+  }
+
+  .vagas-resumo {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .vagas-resumo.vagas-resumo--sem-acao {
+    grid-template-columns: 1fr;
+  }
+
+  .vagas-resumo__action {
+    grid-column: auto;
+  }
+
+  .vagas-resumo__box,
+  .vagas-resumo__action {
+    min-height: 52px;
+    height: auto;
+  }
+
+  .vehicle-title {
+    white-space: normal;
+  }
+
+  .vehicle-title-row {
+    align-items: flex-start;
+  }
+
+  .vagas-empty-state {
+    padding: 1.5rem 0.875rem;
   }
 }
 
@@ -205,6 +293,32 @@
   background-color: #f0fdf4;
   color: #15803d;
   border-color: #bbf7d0;
+}
+
+.vagas-empty-state {
+  border: 1px dashed #9ca3af;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #475569;
+}
+
+.vagas-empty-state__icon {
+  font-size: 2rem;
+  color: #26a69a;
+  margin-bottom: 0.75rem;
+}
+
+.vagas-empty-state__title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+
+.vagas-empty-state__description {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
 }
 
 .vehicle-title {

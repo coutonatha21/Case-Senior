@@ -1,14 +1,16 @@
 <p-toast position="top-right"></p-toast>
 <p-confirmDialog></p-confirmDialog>
 <app-loading [loading]="carregandoVagas()">
-  <p-card>
+  <div class="vagas-layout">
+  <p-card class="painel-vagas">
     <ng-template pTemplate="title">
       <h2>Vagas por Estacionamento</h2>
     </ng-template>
     <ng-template pTemplate="content">
-      <p-toolbar>
+      <p-toolbar styleClass="vagas-toolbar">
         <ng-template pTemplate="start">
-          <p-iconField iconPosition="right">
+          <div class="toolbar-busca">
+          <p-iconField iconPosition="right" styleClass="w-full">
             <p-autoComplete
               [(ngModel)]="estacionamentoBusca"
               (ngModelChange)="onEstacionamentoChange($event)"
@@ -32,11 +34,12 @@
               </ng-template>
             </p-autoComplete>
           </p-iconField>
+          </div>
         </ng-template>
         <ng-template pTemplate="center"> </ng-template>
         <ng-template pTemplate="end">
           <div
-            class="vagas-resumo"
+            class="vagas-resumo toolbar-resumo"
             [ngClass]="{ 'vagas-resumo--sem-acao': estacionamentoSelecionado?.vagDis === '0' }"
             *ngIf="possuiEstacionamentoSelecionadoValido() && !carregandoVagas()"
           >
@@ -81,8 +84,19 @@
       </p-toolbar>
     </ng-template>
   </p-card>
-  <div class="grid mt-1">
-    <div class="col-3" *ngFor="let vehicle of vehicles">
+  <div
+    class="vagas-empty-state mt-2"
+    *ngIf="!possuiEstacionamentoSelecionadoValido() && !carregandoVagas()"
+  >
+    <i class="pi pi-car vagas-empty-state__icon" aria-hidden="true"></i>
+    <h3 class="vagas-empty-state__title">Nenhum estacionamento selecionado</h3>
+    <p class="vagas-empty-state__description">
+      Selecione um estacionamento para visualizar as vagas disponíveis.
+    </p>
+  </div>
+
+  <div class="grid mt-2 vagas-grid" *ngIf="possuiEstacionamentoSelecionadoValido()">
+    <div class="col-12 sm:col-6 xl:col-4 2xl:col-3" *ngFor="let vehicle of vehicles">
       <p-card
         [ngClass]="{ 'vaga-livre-card': vehicle.owner === 'Livre' }"
         class="card-moderno"
@@ -140,5 +154,6 @@
         </ng-template>
       </p-card>
     </div>
+  </div>
   </div>
 </app-loading>
