@@ -57,7 +57,7 @@ Abaixo estão os links para cada componente da solução, organizados conforme a
 ---
 
 ## 🚀 Como Instalar
-6.01. & 6.02. Utilize o arquivo `vetor.tbs` para visualizar e copiar a estrutura das tabelas. Importe as interfaces e formulários através do SGI.
+6.01. & 6.02. Utilize o arquivo `vetorh.tbs` para visualizar e copiar a estrutura das tabelas. Importe as interfaces e formulários através do SGI.
 
 6.03. Os arquivos dos relatórios devem ser movidos para a pasta vetorh/Modelos, na raiz da instalação do XT.
 
@@ -73,4 +73,4 @@ Abaixo estão os links para cada componente da solução, organizados conforme a
 
 ---
 **Desenvolvido por:** Nathanael Felipe
-**Status:** Versão 1.0
+**Versão:** 1.0
