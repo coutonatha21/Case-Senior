@@ -29,8 +29,14 @@ export class PaginaInicialComponent implements OnInit {
           this.carregandoInformacoes.set(false);
         }),
       )
-      .subscribe((infoEstacionamentos) => {
-        this.informacoesEstacionamentos.set(infoEstacionamentos);
+      .subscribe({
+        next: (infoEstacionamentos) => {
+          console.log('Informações dos estacionamentos obtidas:', infoEstacionamentos);
+          this.informacoesEstacionamentos.set(infoEstacionamentos);
+        },
+        error: (erro) => {
+          console.error('Falha ao obter informações dos estacionamentos:', erro);
+        },
       });
   }
 }
