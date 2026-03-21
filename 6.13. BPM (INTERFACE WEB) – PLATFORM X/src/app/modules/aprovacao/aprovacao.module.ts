@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ApoioRhRoutingModule } from './apoio-rh-routing.module';
-import { ApoioRhComponent } from './apoio-rh.component';
+import { AprovacaoComponent } from './aprovacao.component';
+import { AprovacaoRoutingModule } from './aprovacao-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
   declarations: [
-    ApoioRhComponent
+    AprovacaoComponent
   ],
   imports: [
     CommonModule,
-    ApoioRhRoutingModule,
+    AprovacaoRoutingModule,
     SharedModule
   ],
   exports: [
-    ApoioRhComponent
+    AprovacaoComponent
   ]
 })
-export class ApoioRhModule { }
+export class AprovacaoModule { }

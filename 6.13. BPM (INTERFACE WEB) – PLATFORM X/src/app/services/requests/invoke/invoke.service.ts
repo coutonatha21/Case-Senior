@@ -65,7 +65,7 @@ export class InvokeService {
       this.http.post<{
         roles: { id: string; name: string; description: string }[];
       }>(
-        'https://platform.senior.com.br/t/senior.com.br/bridge/1.0/rest/platform/authorization/queries/getUserDetailRoles',
+        'https://platform-homologx.senior.com.br/t/senior.com.br/bridge/1.0/rest/platform/authorization/queries/getUserDetailRoles',
         { user: nomeUsuario }
       )
     )
@@ -111,8 +111,10 @@ export class InvokeService {
       throw new Error(response.message)
     }
     if(response.responseCode == 200){
-      if(response.ARetorno && response.ARetorno.toLocaleUpperCase() != "OK"){
-        throw new Error(response.ARetorno);
+      const aRetornoOk = response.ARetorno && response.ARetorno.toLocaleUpperCase() === 'OK';
+      const retMsgOk = !!response.retMsg;
+      if (!aRetornoOk && !retMsgOk) {
+        throw new Error(response?.ARetorno || 'Não foi encontrado o ARetorno do Webservice!');
       }
     }
     return;

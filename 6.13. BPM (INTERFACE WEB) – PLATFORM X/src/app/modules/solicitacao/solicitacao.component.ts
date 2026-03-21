@@ -1,13 +1,18 @@
 import { ComponenteLoadingService } from '../../services/utils/componente-loading.service';
-import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { EtapaControlService, EtapaWorkflow } from '@services/utils/etapa-control.service';
+import { Component, ViewChild } from '@angular/core';
+import {
+  EtapaControlService,
+  EtapaWorkflow,
+} from '@services/utils/etapa-control.service';
 import { WfFormData } from 'src/app/core/service/workflow/workflow-cockpit/dist/workflow-cockpit';
 import { WorkflowService } from 'src/app/core/service/workflow/workflow.service';
 import { DadosSolicitanteComponent } from '@components/dados-solicitante/dados-solicitante.component';
 import { DadosVeiculoComponent } from '@components/dados-veiculo/dados-veiculo.component';
 import { SeniorXTService } from '@services/requests/seniorXT.service';
+import { EtapaModel } from 'src/app/modules/etapa.model';
 import { VariaveisProcessoG7DTO } from '../../shared/models/variaveis-processo.model';
 import { NotificationService } from '@services/utils/notification.service';
+import { InvokeService } from '../../services/requests/invoke/invoke.service';
 import { catchError, EMPTY, finalize, take } from 'rxjs';
 
 @Component({
@@ -15,12 +20,12 @@ import { catchError, EMPTY, finalize, take } from 'rxjs';
   templateUrl: './solicitacao.component.html',
   styleUrl: './solicitacao.component.scss',
 })
-export class SolicitacaoComponent implements OnInit, AfterViewInit {
+export class SolicitacaoComponent implements EtapaModel{
   
-  @ViewChild(DadosSolicitanteComponent, { static: false })
+  @ViewChild(DadosSolicitanteComponent, {static: true})
   dadosSolicitanteComponent!: DadosSolicitanteComponent;
 
-  @ViewChild(DadosVeiculoComponent, { static: false })
+  @ViewChild(DadosVeiculoComponent, {static: true})
   dadosVeiculoComponent!: DadosVeiculoComponent;
 
   nomeSolicitante!: string;
@@ -30,17 +35,11 @@ export class SolicitacaoComponent implements OnInit, AfterViewInit {
     private componenteLoadingService: ComponenteLoadingService,
     private etapaControlService: EtapaControlService,
     private seniorXT: SeniorXTService,
+    private invoke: InvokeService,
     private notification: NotificationService
   ) {
     this.etapaControlService.setEtapaAtual(EtapaWorkflow.SOLICITACAO);
     this.wfService.onSubmit(this.enviarFormulario.bind(this));
-    
-    try {
-      this.nomeSolicitante = this.wfService.getUser().username;
-    } catch (error) {
-      console.warn('Usuário não disponível no contexto de teste');
-      this.nomeSolicitante = 'usuario_teste';
-    }
   }
   
   ngOnInit(): void {
@@ -51,57 +50,47 @@ export class SolicitacaoComponent implements OnInit, AfterViewInit {
     this.inicializarFormulario();
   }
 
-  inicializarFormulario(): void {
-    if (!this.dadosSolicitanteComponent || !this.dadosVeiculoComponent) {
-      console.warn('Componentes não inicializados ainda');
-      return;
-    }
-
+  inicializarFormulario() {
     this.seniorXT.dadosSolicitante(this.nomeSolicitante).pipe(
       take(1),
       catchError((err) => {
-        console.error('Erro ao buscar dados do solicitante:', err);
-        this.notification.requestError('Erro ao carregar dados do solicitante.');
+        this.notification.requestError(err);
         return EMPTY;
       }),
-      finalize(() => {
-        this.componenteLoadingService.finalizarLoadingDinamico();
-      })
+      finalize(() => {this.componenteLoadingService.finalizarLoadingDinamico()})
     ).subscribe(
       (response) => {
         this.dadosSolicitanteComponent.inicializarComponente(response);
       }
-    );
+    ) 
   }
 
   formulariosValidos(): boolean {
-    const solicitanteValido = this.dadosSolicitanteComponent?.formularioValido();
-    const veiculoValido = this.dadosVeiculoComponent?.formularioValido();
+    const solicitanteValido = this.dadosSolicitanteComponent.formularioValido();
+    const veiculoValido = this.dadosVeiculoComponent.formularioValido();
 
     return solicitanteValido && veiculoValido;
   }
 
-  montaFormData(): VariaveisProcessoG7DTO {
-    return {
-      nomeSolicitante: this.nomeSolicitante,
-      dadosSolicitante: JSON.stringify(this.dadosSolicitanteComponent?.retornaValores() || {}),
-      dadosVeiculo: JSON.stringify(this.dadosVeiculoComponent?.retornaValores() || {})
-    };
-  }
-
   async enviarFormulario(): Promise<WfFormData | undefined> {
-    try {
-      if (!this.formulariosValidos()) {
+    try{
+      if(!this.formulariosValidos()){
         this.wfService.abortSubmit();
-        return;
       }
 
       return {
         formData: this.montaFormData()
       };
-    } catch (error) {
-      console.error('Erro ao enviar formulário:', error);
+    }catch(error){
+      console.error(error);
       this.wfService.abortSubmit();
+    }
+  }
+
+  montaFormData(): VariaveisProcessoG7DTO{
+    return {
+      dadosSolicitante: JSON.stringify(this.dadosSolicitanteComponent.retornaValores()),
+      dadosVeiculo: JSON.stringify(this.dadosVeiculoComponent.retornaValores())
     }
   }
 }

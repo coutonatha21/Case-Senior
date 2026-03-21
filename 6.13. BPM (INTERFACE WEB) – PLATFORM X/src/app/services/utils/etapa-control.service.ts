@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 
 export enum EtapaWorkflow {
   DETALHES = 'Detalhes',
+  APROVACAO = 'Aprovação',
+  REVISAO = 'Revisão',
   SOLICITACAO = 'Solicitação',
-  RH = 'Apoio RH'
+  GESTOR = 'Analise Gestor'
   // Adicione outras etapas conforme necessário
 }
 

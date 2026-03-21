@@ -27,7 +27,7 @@
     "@senior-hcm-service-tower/hst-card": "^1.0.0",
     "@senior-hcm-service-tower/hst-dados": "^1.0.1",
     "@senior-hcm-service-tower/hst-input": "^1.1.2",
-    "@senior-hcm-service-tower/hst-lookup": "^2.0.2",
+    "@senior-hcm-service-tower/hst-lookup": "^2.0.1",
     "@senior-hcm-service-tower/hst-message": "^1.0.2",
     "@senior-hcm-service-tower/hst-upload-files": "^1.0.4",
     "date-fns": "^4.1.0",

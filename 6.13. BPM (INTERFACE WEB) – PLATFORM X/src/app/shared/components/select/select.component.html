@@ -6,23 +6,19 @@
   {{ config.label }}
 </label>
 
-<div (click)="$event.stopPropagation()"> <!-- Adicione esta div -->
-  <p-dropdown
-    [hidden]="isDisabled"
-    [options]="config.options?.length ? config.options : [{ label: 'N/A', value: null, disabled: true }]"
-    [optionLabel]="config.optionLabel"
-    [optionValue]="config.optionValue"
-    [placeholder]="config.placeholder"
-    [disabled]="isDisabled"
-    (onChange)="onChange($event.value)"
-    (onBlur)="onTouched()"
-    [ngClass]="showError() ? 'form-error' : ''">
-  </p-dropdown>
-</div>
+<p-dropdown
+  [hidden]="isDisabled"
+  [options]="config.options?.length ? config.options : [{ label: 'N/A', value: null, disabled: true }]"
+  [optionLabel]="config.optionLabel"
+  [optionValue]="config.optionValue"
+  [placeholder]="config.placeholder"
+  [disabled]="isDisabled"
+  (onChange)="onChange($event.value)"
+  (onBlur)="onTouched()"
+  [ngClass]="showError() ? 'form-error' : ''">
+</p-dropdown>
 
-<p [hidden]="!isDisabled"> 
-    {{ (value && value[config.optionLabel]) || 'N/A' }} 
-</p>
+<p [hidden]="!isDisabled"> {{config.options?.[value]?.[config.optionLabel] || 'N/A'}} </p>
 
 <div *ngIf="showError()" class="required-error">
   * Campo obrigatório!

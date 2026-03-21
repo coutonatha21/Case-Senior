@@ -1,5 +1,5 @@
 export const environment = {
-  client_id: 'b0d5b4d8-a857-4261-bb7e-efa6342296e1',
+  client_id: '5d5ecae1-cf37-4118-89ce-fd4971ab22be',
   fluxo: 'composable',
   valida_versao: false,
   versao: '1.0.0',

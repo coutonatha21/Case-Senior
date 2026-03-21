@@ -50,17 +50,12 @@ export class NotificationService {
     }
   }
 
-  formSucess(message: string, throwError:boolean = false): void{
+  success(message: string): void {
     this.messageService.add({
       severity: 'success',
-      summary: 'Operação realizada com sucesso!',
-      detail:
-        message ||
-        'Operação realizada com sucesso!',
-      sticky: true,
+      summary: 'Sucesso!',
+      detail: message,
     });
-    if(throwError){
-      throw new Error(message || 'Operação realizada com sucesso!')
-    }
   }
+
 }

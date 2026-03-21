@@ -1,5 +1,3 @@
-import { OutputData } from "@services/requests/models/response.model";
-
 export interface DadosVeiculosDTO{
   PlaVei: string,
   ModVei: string,
@@ -17,6 +15,19 @@ export class DadosVeiculo implements DadosVeiculosDTO{
   }
 }
 
-export interface RetornoDadosVeiculosDTO extends DadosVeiculosDTO, OutputData {
-  
+import { OutputData } from 'src/app/services/requests/models/response.model';
+
+export interface RetornoVeiculosDTO extends OutputData {
+  RetVei?: DadosVeiculosDTO[];
+}
+
+export interface ObservacaoDTO{
+  observacao: string;
+}
+
+export class Observacao implements ObservacaoDTO{
+  observacao: string = "N/A";
+
+  constructor(){
+  }
 }

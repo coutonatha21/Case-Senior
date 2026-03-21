@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { RevisaoRoutingModule } from './revisao-routing.module';
 import { RevisaoComponent } from './revisao.component';
+import { RevisaoRoutingModule } from './revisao-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 

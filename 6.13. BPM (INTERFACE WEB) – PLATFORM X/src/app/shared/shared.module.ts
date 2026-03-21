@@ -23,16 +23,18 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { BadgeModule } from 'primeng/badge';
 import { TagModule } from 'primeng/tag';
+
 import { InputComponent } from '@senior-hcm-service-tower/hst-input';
 import { DadosSolicitanteComponent } from './components/dados-solicitante/dados-solicitante.component';
-import { DadosVeiculoComponent } from './components/dados-veiculo/dados-veiculo.component';
 import { CardComponent } from '@senior-hcm-service-tower/hst-card';
 import { LookupComponent } from '@senior-hcm-service-tower/hst-lookup';
 import { DadosComponent } from '@senior-hcm-service-tower/hst-dados';
 import { UploadFilesComponent } from '@senior-hcm-service-tower/hst-upload-files';
 import { MessageComponent } from '@senior-hcm-service-tower/hst-message';
 import { SelectComponent } from './components/select/select.component';
+import { ObservacaoComponent } from './components/observacao/observacao.component';
 import { BlockInteractionDirective } from '../utils/directives/bloqueia-interacao.directive';
+import { DadosVeiculoComponent } from './components/dados-veiculo/dados-veiculo.component';
 
 const NG_COMPONENTS = [
   ButtonModule,
@@ -66,8 +68,9 @@ const NG_COMPONENTS = [
 
 const CUSTOM_COMPONENTS = [
   DadosSolicitanteComponent,
-  DadosVeiculoComponent,
-  SelectComponent
+  ObservacaoComponent,
+  SelectComponent,
+  DadosVeiculoComponent
   // -- Adicionar componentes criados no shared
 ]
 
@@ -78,7 +81,8 @@ const DIRECTIVES = [
 @NgModule({
   declarations: [
     ...CUSTOM_COMPONENTS,
-    ...DIRECTIVES
+    ...DIRECTIVES,
+    DadosVeiculoComponent
   ],
   imports: [
     CommonModule,

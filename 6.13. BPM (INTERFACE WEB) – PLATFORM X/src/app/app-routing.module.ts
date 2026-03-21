@@ -15,17 +15,17 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'aprovacao',
+    loadChildren: () =>
+      import('./modules/aprovacao/aprovacao.module').then(
+        (m) => m.AprovacaoModule
+      ),
+  },
+  {
     path: 'revisao',
     loadChildren: () =>
       import('./modules/revisao/revisao.module').then(
         (m) => m.RevisaoModule
-      ),
-  },
-  {
-    path: 'apoio-rh',
-    loadChildren: () =>
-      import('./modules/apoio-rh/apoio-rh.module').then(
-        (m) => m.ApoioRhModule
       ),
   }
 ];

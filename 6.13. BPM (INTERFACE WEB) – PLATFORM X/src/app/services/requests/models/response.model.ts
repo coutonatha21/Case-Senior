@@ -6,4 +6,5 @@ export interface OutputData {
   ARetorno: string;
   responseCode: number;
   message?: string;
+  retMsg?: string;
 };

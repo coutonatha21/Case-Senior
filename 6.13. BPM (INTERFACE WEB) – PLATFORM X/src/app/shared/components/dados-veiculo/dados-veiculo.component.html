@@ -1,42 +1,101 @@
-<hst-card 
-  [titulo]="'Dados do Veículo'">
-
+<hst-card [titulo]="'Dados do Veículo'">
   <form [formGroup]="formulario" class="grid">
+    <div class="col-3">
+      <ng-container *ngIf="!isSomenteLeitura(); else placaSomenteLeitura">
+        <hst-input
+          type="text"
+          label="Placa"
+          mask="SSS0S00"
+          placeholder="Ex: ABC1D23"
+          maxlength="7"
+          formControlName="PlaVei"
+        />
+      </ng-container>
 
-    <div class="col-4">
-      <hst-input
-        type="text"
-        label="Placa (ABC1D23)"
-        formControlName="PlaVei"
-        [errorsMessage]="errorsMessage"
-      />
+      <ng-template #placaSomenteLeitura>
+        <label>Placa</label>
+        <input
+          class="p-inputtext p-component readonly-field"
+          [value]="formulario.get('PlaVei')?.value || ''"
+          disabled
+        />
+      </ng-template>
     </div>
 
-    <div class="col-4 teste">
-      <hst-input
-        class="teste"
-        type="text"
-        label="Modelo"
-        placeholder="Ex: Corolla" 
-        formControlName="ModVei"
-        [errorsMessage]="errorsMessage"
-      />
+    <div class="col-3">
+      <ng-container *ngIf="!isSomenteLeitura(); else modeloSomenteLeitura">
+        <hst-input
+          type="text"
+          label="Modelo"
+          placeholder="Ex: Ford New Fiesta"
+          formControlName="ModVei"
+        />
+      </ng-container>
+
+      <ng-template #modeloSomenteLeitura>
+        <label>Modelo</label>
+        <input
+          class="p-inputtext p-component readonly-field"
+          [value]="formulario.get('ModVei')?.value || ''"
+          disabled
+        />
+      </ng-template>
     </div>
 
-    <div class="col-4 ">
-      <app-select #cor [config]="coresConfig" formControlName="CorVei"></app-select>   
+    <div class="col-3">
+      <ng-container *ngIf="!isSomenteLeitura(); else corSomenteLeitura">
+        <label for="cor-veiculo">
+          <strong style="display: inline;" class="form-error">*</strong>
+          Cor
+        </label>
+        <select
+          id="cor-veiculo"
+          class="p-inputtext p-component"
+          [ngClass]="{ 'invalid-select': isCorInvalida() }"
+          formControlName="CorVei"
+          (blur)="corControl?.markAsTouched()"
+        >
+          <option [ngValue]="null">Selecione a cor</option>
+          <option *ngFor="let opcao of opcoesCor" [value]="opcao.value">
+            {{ opcao.label }}
+          </option>
+        </select>
+
+        <div *ngIf="isCorInvalida()" class="required-error">
+          * Campo obrigatório!
+        </div>
+      </ng-container>
+
+      <ng-template #corSomenteLeitura>
+        <label>Cor</label>
+        <input
+          class="p-inputtext p-component readonly-field"
+          [value]="formulario.get('CorVei')?.value || ''"
+          disabled
+        />
+      </ng-template>
     </div>
 
-    <div class="col-4">
-      <hst-input
-        type="text"
-        label="Ano"
-        mask="0000"
-        formControlName="AnoVei"
-        [errorsMessage]="errorsMessage"
-      />
-    </div>
+    <div class="col-3">
+      <ng-container *ngIf="!isSomenteLeitura(); else anoSomenteLeitura">
+        <hst-input
+          type="text"
+          label="Ano"
+          mask="0000"
+          maxlength="4"
+          placeholder="Ex: 2026"
+          formControlName="AnoVei"
+        />
+      </ng-container>
 
+      <ng-template #anoSomenteLeitura>
+        <label>Ano</label>
+        <input
+          class="p-inputtext p-component readonly-field"
+          [value]="formulario.get('AnoVei')?.value || ''"
+          disabled
+        />
+      </ng-template>
+    </div>
   </form>
 </hst-card>
-

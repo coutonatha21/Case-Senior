@@ -10,6 +10,8 @@ import {
 } from './workflow-cockpit';
 import { WfUser } from './model/user';
 import { VariaveisProcessoDTO } from '../../../shared/models/variaveis-processo.model';
+import { DadosSolicitante, DadosSolicitanteDTO } from '../../../shared/models/colaboradores.model';
+import { DadosVeiculo, DadosVeiculosDTO, Observacao, ObservacaoDTO } from '../../../shared/models/veiculo.model';
 
 type ErrorFunction = (
   proccessStep: WfProcessError,
@@ -116,21 +118,23 @@ export class WorkflowService {
   }
 
   public requestProcessVariables(): Promise<VariaveisProcessoDTO | ProccessVariables> {
-    return Promise.race<VariaveisProcessoDTO | ProccessVariables>([
-      this.workflow.getInfoFromProcessVariables().then((wfVariables) => {
-        if (wfVariables) {
-          return this.parsePendencyData(wfVariables);
-        } else {
-          return {} as VariaveisProcessoDTO;
-        }
-      }),
-      new Promise<VariaveisProcessoDTO | ProccessVariables>((_, reject) =>
-        setTimeout(() => reject(new Error('Timeout ao carregar variáveis do processo')), 10000)
-      )
-    ]).catch((error) => {
-      console.warn('Erro ao carregar variáveis do processo:', error);
-      return {} as VariaveisProcessoDTO;
+    return this.workflow.getInfoFromProcessVariables().then((wfVariables) => {
+      if (wfVariables) {
+        return this.parsePendencyData(wfVariables);
+      } else {
+        return {};
+      }
     });
+  }
+
+  public async requestTypedProcessVariables(): Promise<VariaveisProcessoDTO> {
+    const variables = (await this.requestProcessVariables()) as Record<string, unknown>;
+
+    return {
+      dadosSolicitante: this.parseProcessVariable<DadosSolicitanteDTO>(variables['dadosSolicitante'], new DadosSolicitante()),
+      dadosVeiculo: this.parseProcessVariable<DadosVeiculosDTO>(variables['dadosVeiculo'], new DadosVeiculo()),
+      observacao: this.parseProcessVariable<ObservacaoDTO>(variables['observacao'], new Observacao())
+    };
   }
 
   public getToken(bearer = true): string {
@@ -140,6 +144,26 @@ export class WorkflowService {
 
   public getUser(): WfUser {
     return JSON.parse(sessionStorage.getItem('userData') || '{}') as WfUser;
+  }
+
+  private parseProcessVariable<T>(value: unknown, fallback: T): T {
+    if (value === null || value === undefined || value === '') {
+      return fallback;
+    }
+
+    if (typeof value === 'object') {
+      return value as T;
+    }
+
+    if (typeof value === 'string') {
+      try {
+        return JSON.parse(value) as T;
+      } catch {
+        return fallback;
+      }
+    }
+
+    return fallback;
   }
 
   private parsePendencyData(pendencyData: WfVariable[]): VariaveisProcessoDTO {

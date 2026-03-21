@@ -1,9 +1,10 @@
-import {  map, Observable, take } from "rxjs";
+import { map, Observable, take } from "rxjs";
 import { RetornoDadosSolicitanteDTO } from "src/app/shared/models/colaboradores.model";
 import { InvokeService } from "./invoke/invoke.service";
 import { Injectable } from "@angular/core";
 import { rubi } from "@services/constants";
-import { RetornoDadosVeiculosDTO} from '..//../shared/models/veiculo.model';
+import { DadosVeiculosDTO, RetornoVeiculosDTO } from "src/app/shared/models/veiculo.model";
+import { DadosSolicitanteDTO } from "src/app/shared/models/colaboradores.model";
 
 @Injectable({ providedIn: 'root' })
 export class SeniorXTService {
@@ -22,31 +23,28 @@ export class SeniorXTService {
       true
     )
   }
+  
 
-  /**
-   * Cadastra um novo veículo no sistema
-   * Não retorna dados, apenas confirma o cadastro
-   * @param dadosVeiculo Dados do veículo a ser cadastrado
-   * @returns Observable<void> - Apenas confirma sucesso da operação
-   */
-  cadastrarVeiculo(args?: Record<string, string>): Observable<void> {
-
-    const dadosEnvio: any = {
-      TipOpe: "C",
-      RetVei: [args], 
-    };
-
-    return this.invoke.obterDadosXT<RetornoDadosVeiculosDTO>(
+  criarNovoVeiculo(
+    dadosVeiculo: DadosVeiculosDTO,
+    identificacao: Pick<DadosSolicitanteDTO, 'NNumEmp' | 'NTipCol' | 'NNumCad'>
+  ): Observable<RetornoVeiculosDTO> {
+    return this.invoke.obterDadosXT<RetornoVeiculosDTO>(
       rubi.treinamento.service,
-      rubi.treinamento.ports.veiculos,
+      rubi.treinamento.ports.veiculo,
       rubi.name,
-      dadosEnvio,
+      {
+        TipOpe: 'C',
+        RetVei: [{
+          ...dadosVeiculo,
+          NumEmp: identificacao.NNumEmp,
+          TipCol: identificacao.NTipCol,
+          NumCad: identificacao.NNumCad,
+        }],
+      } as any,
       true
-    ).pipe(
-      take(1),
-      map(() => {
-        return void 0;
-      })
     );
   }
+
 }
+

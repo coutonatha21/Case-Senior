@@ -9,46 +9,33 @@ import { montaCamposColaborador } from 'src/app/utils/factories/campos-colaborad
 @Component({
   selector: 'app-dados-solicitante',
   templateUrl: './dados-solicitante.component.html',
-  styleUrl: './dados-solicitante.component.scss'
+  styleUrl: './dados-solicitante.component.scss',
 })
 export class DadosSolicitanteComponent implements ComponentModel {
-  camposSolicitante: CampoModel[] = []
+  camposSolicitante: CampoModel[] = [];
   formulario!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private notification: NotificationService
-  ){
+    private notification: NotificationService,
+  ) {
     this.formulario = this.fb.group({
-      NNumEmp: [{ value: "", disabled: false }, Validators.required],
-      NTipCol: [{ value: "", disabled: false }, Validators.required],
-      NNumCad: [{ value: "", disabled: false }, Validators.required],
-      ANomFun: [{ value: "", disabled: false }, Validators.required],
-      ANomEmp: [{ value: "", disabled: false }, Validators.required],
-      NCodFil: [{ value: "", disabled: false }, Validators.required],
-      ANomFil: [{ value: "", disabled: false }, Validators.required],
-      ACodCCU: [{ value: "", disabled: false }, Validators.required],
-      ANomCCU: [{ value: "", disabled: false }, Validators.required],
-      APosTra: [{ value: "", disabled: false }, Validators.required],
-      ADesPos: [{ value: "", disabled: false }, Validators.required],
-      AEhGestor: [{ value: "", disabled: false }, Validators.required]
-    })
-    this.camposSolicitante = montaCamposColaborador(this.formulario.getRawValue());
-  }
-  
-  preencherFormulario(dados: DadosSolicitante){
-    this.formulario.patchValue(dados);
-    this.camposSolicitante = montaCamposColaborador(dados);
+      NNumEmp: [{ value: '', disabled: false }, Validators.required],
+      NTipCol: [{ value: '', disabled: false }, Validators.required],
+      NNumCad: [{ value: '', disabled: false }, Validators.required],
+      ANomFun: [{ value: '', disabled: false }, Validators.required],
+      ANomEmp: [{ value: '', disabled: false }, Validators.required],
+      NCodFil: [{ value: '', disabled: false }, Validators.required],
+      ANomFil: [{ value: '', disabled: false }, Validators.required],
+      ANomCCU: [{ value: '', disabled: false }, Validators.required],
+      AEhGestor: [{ value: '', disabled: false }, Validators.required],
+    });
+    this.camposSolicitante = montaCamposColaborador(
+      this.formulario.getRawValue(),
+    );
   }
 
-  ehGestor():boolean{
-    if(this.formulario.get('AEhGestor')?.value.toLocaleUpperCase() == "S"){
-      return true;
-    }
-    return false;
-  }
-
-  retornaValores():DadosSolicitante{
+  retornaValores(): DadosSolicitante {
     return this.formulario.getRawValue();
   }
 
@@ -58,50 +45,57 @@ export class DadosSolicitanteComponent implements ComponentModel {
   }
 
   formularioValido(): boolean {
-    for(const campo in this.formulario.controls){
+    for (const campo in this.formulario.controls) {
       this.formulario.get(campo)?.markAsDirty();
       this.formulario.get(campo)?.updateValueAndValidity();
     }
-    if(this.formulario.invalid && this.formulario.enabled){
-      this.notification.formError("Não foram encontrados os dados do solicitante.")
+    if (this.formulario.invalid && this.formulario.enabled) {
+      this.notification.formError(
+        'Não foram encontrados os dados do solicitante.',
+      );
       return false;
     }
     return true;
   }
 
+  preencherFormulario(dados: DadosSolicitante) {
+    this.formulario.patchValue(dados);
+    this.camposSolicitante = montaCamposColaborador(dados);
+  }
+
   limparValidadores(): void {
-    Object.values(this.formulario.controls).forEach(control => {
+    Object.values(this.formulario.controls).forEach((control) => {
       control.clearValidators();
     });
   }
 
   setarValidadores(): void {
-    Object.values(this.formulario.controls).forEach(control => {
+    Object.values(this.formulario.controls).forEach((control) => {
       control.setValidators([Validators.required]);
       control.updateValueAndValidity();
     });
   }
 
   desabilitarCampos(): void {
-    Object.values(this.formulario.controls).forEach(control => {
+    Object.values(this.formulario.controls).forEach((control) => {
       control.disable();
     });
   }
 
   habilitarCampos(): void {
-    Object.values(this.formulario.controls).forEach(control => {
+    Object.values(this.formulario.controls).forEach((control) => {
       control.enable();
     });
   }
-  switchGestor(forceTrue: boolean = false): void {
-    const control = this.formulario.get('AEhGestor');
-    if (!control) return;
-    
-    if (forceTrue) {
-      control.setValue('S');
-      return;
-    }
+  // switchGestor(forceTrue: boolean = false): void {
+  //   const control = this.formulario.get('AEhGestor');
+  //   if (!control) return;
 
-    control.setValue(control.value === 'S' ? 'N' : 'S');
-  }
+  //   if (forceTrue) {
+  //     control.setValue('S');
+  //     return;
+  //   }
+
+  //   control.setValue(control.value === 'S' ? 'N' : 'S');
+  // }
 }

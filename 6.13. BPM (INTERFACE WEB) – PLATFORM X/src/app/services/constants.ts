@@ -16,7 +16,7 @@ export const rubi = {
     service: "com.senior.case.gestaoEstacionamento",
     ports:{
       solicitante: "Solicitante",
-      veiculos: "CRUD_Veiculos"
+      veiculo: "CRUD_Veiculos"
     }
   }
 }

@@ -77,9 +77,6 @@ export class AppComponent implements OnInit {
 
   private configurarLoadingNavegacao(): void {
     this.router.events.subscribe((event) => {
-
-      console.log(event)
-      
       if (event instanceof NavigationStart) {
         this.estaNavegando = true;
         this.mensagemRotaAtual = this.obterMensagemLoading(event.url);

@@ -50,7 +50,6 @@ export class SelectComponent implements ControlValueAccessor {
   showError(): boolean {
     if (!this.ngControl || !this.ngControl.control) return false;
     const control = this.ngControl.control;
-    //return control.invalid && (control.touched || control.dirty);
-    return control.invalid && control.dirty;
+    return control.invalid && (control.touched || control.dirty);
   }
 }
